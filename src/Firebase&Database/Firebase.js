@@ -46,23 +46,31 @@ class Firebase extends Component {
         }
         var reader = new FileReader();
         reader.onloadend = function(evt) {
-            var blob = new Blob([evt.target.result], {type:"application/sla"});
+            var blob = new Blob([evt.target.result], {type:"model/stl"});
             var upload_task = fileRef.put(blob);
             const currentRef = app.database().ref(`users/${uid}`);
+            var download_url;
             upload_task
                 .then(uploadTaskSnapshot => {
-                    const download = {file_uid: perm_file_uuid}
-                    currentRef.push(download);
+                    
+                   uploadTaskSnapshot.ref.getDownloadURL().then(function(downloadURL){
+                    download_url = downloadURL;
+                    currentRef.push({download_url: downloadURL});
+                   });
+                    
+                    
                 })
+                return download_url;
         }
         reader.onerror = function (e) {
             console.log("Failed file read: " + e.toString());
         };
         reader.readAsArrayBuffer(file);
 
-        return perm_file_uuid;
+        return ;
     }
-    getFile(file,uid){
+    getFile(file_uid, uid){
+        
 
     }
     

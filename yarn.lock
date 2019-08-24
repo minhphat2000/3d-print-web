@@ -10097,6 +10097,11 @@ text-table@0.2.0, text-table@^0.2.0:
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
   integrity sha1-f17oI66AUgfACvLfSoTsP8+lcLQ=
 
+three-stl-loader@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/three-stl-loader/-/three-stl-loader-1.0.6.tgz#b66240f819300eee88928251937587c3fb4262c1"
+  integrity sha512-Z5Tc41XwYkR7we7Igz9Ck0Gw931aMePpPA2piaixUBOqteztlnh5onH/op5UrTdlOjs6GnKR6DBHZ4plUEh4bA==
+
 three@^0.107.0:
   version "0.107.0"
   resolved "https://registry.yarnpkg.com/three/-/three-0.107.0.tgz#0c862c348d61bd3f22058e01f5e771c1294315a1"

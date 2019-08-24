@@ -38,7 +38,7 @@ class UploadFile extends Component {
                 
                
                 <Segment size='big' stacked>
-                   <Dropzone accept=".docx" onDrop={this.props.onChangeFile}>
+                   <Dropzone accept=".stl" onDrop={this.props.onChangeFile}>
                         {({getRootProps, getInputProps}) => (
                             <section>
                             <div {...getRootProps()}>
