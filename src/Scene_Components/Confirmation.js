@@ -12,7 +12,7 @@ class Confirmation extends Component {
     constructor(props){
         super(props);
         this.state ={
-            file:null
+            file:this.props.file
         }
         console.log(this.props);
         if (this.props.authUser == null){
@@ -36,7 +36,8 @@ class Confirmation extends Component {
         return (
             
             <div>
-                <STLLoading download_url={this.download_url}/>
+                <NavBar authUser={this.props.authUser}/>
+                <STLLoading file={this.state.file}/>
                 <p>Uploaded</p>
             </div>
         );

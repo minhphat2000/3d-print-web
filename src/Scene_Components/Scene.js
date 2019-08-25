@@ -70,7 +70,7 @@ class Scene extends Component{
   render() {
     return (
       <div
-        style={{ width: '400px', height: '400px' }}
+        style={{ width: '800px', height: '800px' }}
         ref={(mount) => { this.mount = mount }}
       />
     )

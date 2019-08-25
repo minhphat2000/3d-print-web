@@ -1,15 +1,16 @@
 import * as THREE from 'three';
 import React, { Component } from 'react';
 import {STLLoader} from 'three/examples/jsm/loaders/STLLoader'
+const OrbitControls = require('three-orbitcontrols');
 class STLLoading extends Component {
     constructor(props){
         super(props)
         this.state = {
-           
+           file:this.props.file,
+           obj:null
         }
     
         //this.url = this.props.firebase.getFile(this.props.uuid);
-        this.start = this.start.bind(this);
         this.stop = this.stop.bind(this)
         this.animate = this.animate.bind(this);
         this.scene = new THREE.Scene();
@@ -18,35 +19,72 @@ class STLLoading extends Component {
         const width = this.mount.clientWidth;
         const height = this.mount.clientHeight;
         const camera = new THREE.PerspectiveCamera(
-            75,
+            90,
             width/height,
             0.1,
             1000
         );
         const renderer = new THREE.WebGLRenderer({antialias: true});
         
+        var reader = new FileReader();
+        var light = new THREE.AmbientLight( 0x404040 );
+        var file = this.state.file;
         var mesh;
-        console.log("in")
-        const loader = new STLLoader();
-        loader.load('./Body_Plain.STL',function(geometry){
-            var material = new THREE.MeshBasicMaterial({color: '#433F81'})
-            this.material = material;
-            mesh = new THREE.Mesh(geometry, material);
-            console.log(mesh);
-            this.scene.add(mesh);
+				reader.addEventListener( 'load', function ( event ) {
 
-        },undefined, function(e){
-          console.error(e);
-        } );
-        this.obj = mesh;
+            var contents = event.target.result;
+
+            var geometry = new STLLoader().parse( contents );
+            geometry.sourceType = "stl";
+            geometry.sourceFile = file;
+
+            var material = new THREE.MeshBasicMaterial({ color: '#0000FF' });
+
+            mesh = new THREE.Mesh( geometry, material );
+            mesh.name = "default";
+            this.scene.add(mesh);
+            mesh.position.set(0,0,7);
+            camera.lookAt(mesh.position);
+            this.scene.add(light);
+            this.obj = mesh;
+            this.start();
+          }.bind(this), false );
+
+          if ( reader.readAsBinaryString !== undefined ) {
+
+            reader.readAsBinaryString( this.state.file );
+
+          } else {
+
+            reader.readAsArrayBuffer( this.state.file );
+
+          }
+
+
+        // loader.load('./Body_Plain.STL',function(geometry){
+        //     var material = new THREE.MeshBasicMaterial({color: '#433F81'})
+        //     this.material = material;
+        //     mesh = new THREE.Mesh(geometry, material);
+        //     console.log(mesh);
+        //     this.scene.add(mesh);
+
+        // },undefined, function(e){
+        //   console.error(e);
+        // } );
+        
         camera.position.z = 4;
         renderer.setClearColor('#000000');
         renderer.setSize(width, height);
         this.camera = camera;
         this.renderer = renderer;
         this.mount.appendChild(this.renderer.domElement);
-        this.start();
-
+        
+        this.start = this.start.bind(this);
+         this.controls = new OrbitControls(camera,this.renderer.domElement);
+        
+        var gridXZ = new THREE.GridHelper(150, 20,0xff0000, 0xffffff);
+        //gridXZ.setColors( new THREE.Color(0xff0000), new THREE.Color(0xffffff) );
+        this.scene.add(gridXZ);
 
     }
     componentWillUnmount() {
@@ -55,6 +93,8 @@ class STLLoading extends Component {
       }
 
     start() {
+        this.controls.enableZoom = true;
+        console.log(this);
         if (!this.frameId) {
           this.frameId = requestAnimationFrame(this.animate)
         }
@@ -66,10 +106,8 @@ class STLLoading extends Component {
 
 
       animate() {
-          console.log(this);
-        this.obj.rotation.x += 0.01
-        this.obj.rotation.y += 0.01
-    
+         
+        this.controls.update();
         this.renderScene()
         this.frameId = window.requestAnimationFrame(this.animate)
       }
@@ -82,7 +120,7 @@ class STLLoading extends Component {
     render() {
         return (
           <div
-            style={{ width: '400px', height: '400px' }}
+            style={{ width: '800px', height: '800px' }}
             ref={(mount) => { this.mount = mount }}
           />
         )
