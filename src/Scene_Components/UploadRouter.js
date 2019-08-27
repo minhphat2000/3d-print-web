@@ -3,6 +3,8 @@ import {Switch, Route} from 'react-router-dom';
 import Confirmation from './Confirmation';
 import UploadFile from './UploadFile';
 import {AuthUserContext} from '../Session/'
+import Choose_Provider from './Choose_Provider';
+import UserSpecify from '../Providers/UserSpecify';
 
 
 
@@ -42,12 +44,20 @@ class  UploadRouter extends Component{
             </AuthUserContext.Consumer>
         );
     }
-    render(){
-        
+    Choose(){
+        return(
+            <Choose_Provider file={this.state.file}/>
+        );
+    }
+    
+
+    render(){ 
     return (
         <Switch>
             <Route exact path='/Upload' component={this.Uploader.bind(this)}/>
              <Route exact path='/Upload/Confirm' component={this.Confirm.bind(this)}/>
+             <Route exact path='/Upload/Choose/' component={this.Choose.bind(this)}/>
+             <Route path='/Upload/Choose/:uid' component={UserSpecify}/>
         </Switch>
 
 

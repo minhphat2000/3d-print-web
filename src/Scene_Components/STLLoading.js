@@ -1,7 +1,9 @@
 import * as THREE from 'three';
 import React, { Component } from 'react';
 import {STLLoader} from 'three/examples/jsm/loaders/STLLoader'
+import {withRouter} from 'react-router-dom';
 const OrbitControls = require('three-orbitcontrols');
+
 class STLLoading extends Component {
     constructor(props){
         super(props)
@@ -27,9 +29,10 @@ class STLLoading extends Component {
         const renderer = new THREE.WebGLRenderer({antialias: true});
         
         var reader = new FileReader();
-        var light = new THREE.AmbientLight( 0x404040 );
+        var light = new THREE.AmbientLight( 0x404040 , 2);
         var file = this.state.file;
         var mesh;
+        try{
 				reader.addEventListener( 'load', function ( event ) {
 
             var contents = event.target.result;
@@ -38,7 +41,7 @@ class STLLoading extends Component {
             geometry.sourceType = "stl";
             geometry.sourceFile = file;
 
-            var material = new THREE.MeshBasicMaterial({ color: '#0000FF' });
+            var material = new THREE.MeshBasicMaterial({ color: '#FFFFFF' });
 
             mesh = new THREE.Mesh( geometry, material );
             mesh.name = "default";
@@ -60,17 +63,12 @@ class STLLoading extends Component {
 
           }
 
+        } catch (error){
 
-        // loader.load('./Body_Plain.STL',function(geometry){
-        //     var material = new THREE.MeshBasicMaterial({color: '#433F81'})
-        //     this.material = material;
-        //     mesh = new THREE.Mesh(geometry, material);
-        //     console.log(mesh);
-        //     this.scene.add(mesh);
-
-        // },undefined, function(e){
-        //   console.error(e);
-        // } );
+          this.props.history.push('/Upload');
+          
+        }
+        
         
         camera.position.z = 4;
         renderer.setClearColor('#000000');
@@ -83,13 +81,18 @@ class STLLoading extends Component {
          this.controls = new OrbitControls(camera,this.renderer.domElement);
         
         var gridXZ = new THREE.GridHelper(150, 20,0xff0000, 0xffffff);
-        //gridXZ.setColors( new THREE.Color(0xff0000), new THREE.Color(0xffffff) );
+        
         this.scene.add(gridXZ);
 
     }
     componentWillUnmount() {
         this.stop()
-        this.mount.removeChild(this.renderer.domElement)
+        try {
+          this.mount.removeChild(this.renderer.domElement)
+        } catch (error) {
+          
+        }
+        
       }
 
     start() {
@@ -131,4 +134,4 @@ class STLLoading extends Component {
 }
     
 
-export default STLLoading;
+export default withRouter(STLLoading);

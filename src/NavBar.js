@@ -13,6 +13,7 @@ import SignOutButton from './Menu_Components/SignOutButton';
 import { compose } from 'recompose';
 import { withFirebase } from './Firebase&Database';
 import {withRouter} from 'react-router-dom'
+import { string } from 'postcss-selector-parser';
 class NavBar extends Component{
     constructor(props){
       super(props)
@@ -80,7 +81,9 @@ class NavBar extends Component{
                   
                 />
               </Menu.Item>
-        
+              <Menu.Item as={Link} to={'/'} header>
+                <h1>3d print</h1>
+              </Menu.Item>
               <Menu.Menu position="right">
                 {this.isAuthenticatedNavbar()}
               </Menu.Menu>

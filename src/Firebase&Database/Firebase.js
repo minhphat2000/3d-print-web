@@ -37,7 +37,7 @@ class Firebase extends Component {
     doPasswordUpdate = password =>
         this.auth.currentUser.updatePassword(password);
     
-    addFile(file,uid){
+    addFile(file,uid,_callback){
         const perm_file_uuid = uuid.v4();
         const fileRef = this.storage.ref().child(`print_files/${uid}/${perm_file_uuid}`);
         if (uid == null){
@@ -55,20 +55,38 @@ class Firebase extends Component {
                     
                    uploadTaskSnapshot.ref.getDownloadURL().then(function(downloadURL){
                     download_url = downloadURL;
-                    currentRef.push({download_url: downloadURL});
+                    currentRef.push({download_url: downloadURL}).then(() =>{
+                        console.log("download_url")
+                        return _callback(downloadURL);
+                        
+                    });
+                    
                    });
                     
                     
                 })
-                return download_url;
+                
         }
         reader.onerror = function (e) {
             console.log("Failed file read: " + e.toString());
         };
         reader.readAsArrayBuffer(file);
 
-        return ;
+       
     }
+    getChildrenKeys(path="",amt=10, _callback){
+        var tempArr = [];
+        var ref = this.db.ref('users/'+path);
+        ref.orderByKey().limitToLast(amt).on("value", function(snapshot){
+
+            snapshot.forEach(function(data){
+                tempArr.push(data.key);
+            });
+            return _callback(tempArr);
+        });
+
+    }
+
     getFile(file_uid, uid){
         
 
