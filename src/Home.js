@@ -4,9 +4,8 @@ import React, {Component} from 'react';
 import NavBar from './NavBar';
 import { render } from "react-dom";
 import Scene from "./Scene_Components/Scene"
-import {Grid} from "semantic-ui-react";
-import  Firebase, {FirebaseContext, withFirebase} from './Firebase&Database/'
-import * as firebase from 'firebase';
+import {Grid, Label} from "semantic-ui-react";
+import  { withFirebase} from './Firebase&Database/'
 import {AuthUserContext} from './Session/';
 
 class Home extends Component{
@@ -22,23 +21,43 @@ class Home extends Component{
 
 
 render(){
-  
+  //Dynamic Categories Required
   return (
     <div id="parent">
       
-      <div>
-          <div>
-            <AuthUserContext.Consumer>
-              {auth => <NavBar a={'p'} authUser={auth}/>}
-            </AuthUserContext.Consumer>
-        </div>
+    <div>
+        <div>
+          <AuthUserContext.Consumer>
+            {auth => <NavBar a={'p'} authUser={auth}/>}
+          </AuthUserContext.Consumer>
       </div>
-      <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
-        <Grid.Column style={{ maxWidth: 450 }}>
-        <React.Fragment>
-          <Scene/>
-        </React.Fragment>
+    </div>
+    <Grid columns={3} textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>  
+      <Grid.Column style={{ maxWidth: 450 }}>
+        <span>Cube</span>
+          <React.Fragment>
+            <Scene obj={'cube'}/>
+          </React.Fragment>
+          
+        
       </Grid.Column>
+      <Grid.Column style={{ maxWidth: 450 }}>
+        <span>Cube</span>
+          <React.Fragment>
+            <Scene  obj={'cube'}/>
+          </React.Fragment>
+          
+        
+      </Grid.Column>
+      <Grid.Column style={{ maxWidth: 450 }}>
+        <span>Cube</span>
+          <React.Fragment>
+            <Scene obj={'cube'}/>
+          </React.Fragment>
+          
+        
+      </Grid.Column>
+      
     </Grid>  
   </div>
   );

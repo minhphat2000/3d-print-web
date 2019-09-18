@@ -13,7 +13,6 @@ import SignOutButton from './Menu_Components/SignOutButton';
 import { compose } from 'recompose';
 import { withFirebase } from './Firebase&Database';
 import {withRouter} from 'react-router-dom'
-import { string } from 'postcss-selector-parser';
 class NavBar extends Component{
     constructor(props){
       super(props)
@@ -34,7 +33,7 @@ class NavBar extends Component{
     isAuthenticatedNavbar(){
       
       if (this.state.authUser != null){
-        console.log("auth")
+        
         const SignOut = compose(
           withRouter,
           withFirebase,
@@ -52,7 +51,6 @@ class NavBar extends Component{
         );
       }
       else {
-        console.log("not auth")
         return (
           <span>
             <Menu.Item as={Link} to="/Login" name="login" >
@@ -70,7 +68,9 @@ class NavBar extends Component{
 
     render(){
         return(
-            <Menu>
+
+          //TODO Recolor
+            <Menu fixed="top" inverted>
               
             <Container>
               <Menu.Item as={Link} to={"/"}  header>
@@ -81,8 +81,8 @@ class NavBar extends Component{
                   
                 />
               </Menu.Item>
-              <Menu.Item as={Link} to={'/'} header>
-                <h1>3d print</h1>
+              <Menu.Item as="a" header>
+                3d print
               </Menu.Item>
               <Menu.Menu position="right">
                 {this.isAuthenticatedNavbar()}
