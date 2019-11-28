@@ -1,4 +1,4 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Small 3D printing React Web Site to store and display 3D models
 
 ## Available Scripts
 
